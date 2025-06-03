@@ -8,14 +8,10 @@ class AP_Settings {
     public function __construct() {
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
         add_action( 'admin_init', array( $this, 'register_settings' ) );
-
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     }
 
-
-
     public function add_menu() {
-      
         add_menu_page(
             __( 'Site Appearance', 'automatise-plugin' ),
             __( 'Site Appearance', 'automatise-plugin' ),
@@ -25,20 +21,7 @@ class AP_Settings {
             'dashicons-admin-customizer',
             81
         );
-
-
-
-        // Якщо хочеш як підпункт у Settings, використовуй це замість add_menu_page:
-        /*
-        add_options_page(
-            __( 'Site Appearance', 'automatise-plugin' ),
-            __( 'Site Appearance', 'automatise-plugin' ),
-            'manage_options',
-            'ap-site-appearance',
-            array( $this, 'settings_page' )
-        );
-        */
-
+        // Якщо хочеш підпункт у Settings, використовуй add_options_page, але не дублюй add_menu_page одночасно!
     }
 
     public function register_settings() {
@@ -68,9 +51,13 @@ class AP_Settings {
         return array_map( 'absint', (array) $value );
     }
 
- 
-
     public function settings_page() {
+        if ( isset( $_GET['ap_install_theme'] ) ) {
+            if ( class_exists( 'AP_Theme_Installer' ) ) {
+                AP_Theme_Installer::install_and_activate();
+                echo '<div class="updated notice"><p>' . esc_html__( 'Automatise Theme installed and activated.', 'automatise-plugin' ) . '</p></div>';
+            }
+        }
         ?>
         <div class="wrap">
             <h1><?php _e( 'Site Appearance Settings', 'automatise-plugin' ); ?></h1>
@@ -144,16 +131,28 @@ class AP_Settings {
                     <tr>
                         <th scope="row"><?php _e( 'Header Pages', 'automatise-plugin' ); ?></th>
                         <td>
-                            <select name="ap_header_pages[]" multiple style="height:100px;width: 250px;">
-                                <?php echo walk_page_dropdown_tree( get_pages(), 0, array( 'selected' => get_option( 'ap_header_pages', array() ) ) ); ?>
+                            <select name="ap_header_pages[]" multiple style="height:100px;width:250px;">
+                                <?php
+                                $header_selected = (array) get_option( 'ap_header_pages', array() );
+                                foreach ( get_pages() as $page ) {
+                                    $sel = in_array( $page->ID, $header_selected ) ? 'selected' : '';
+                                    echo '<option value="' . esc_attr( $page->ID ) . '" ' . $sel . '>' . esc_html( $page->post_title ) . '</option>';
+                                }
+                                ?>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php _e( 'Footer Pages', 'automatise-plugin' ); ?></th>
                         <td>
-                            <select name="ap_footer_pages[]" multiple style="height:100px;width: 250px;">
-                                <?php echo walk_page_dropdown_tree( get_pages(), 0, array( 'selected' => get_option( 'ap_footer_pages', array() ) ) ); ?>
+                            <select name="ap_footer_pages[]" multiple style="height:100px;width:250px;">
+                                <?php
+                                $footer_selected = (array) get_option( 'ap_footer_pages', array() );
+                                foreach ( get_pages() as $page ) {
+                                    $sel = in_array( $page->ID, $footer_selected ) ? 'selected' : '';
+                                    echo '<option value="' . esc_attr( $page->ID ) . '" ' . $sel . '>' . esc_html( $page->post_title ) . '</option>';
+                                }
+                                ?>
                             </select>
                         </td>
                     </tr>
@@ -168,12 +167,6 @@ class AP_Settings {
                 </table>
                 <?php submit_button(); ?>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=ap-site-appearance&ap_install_theme=1' ) ); ?>" class="button button-secondary" style="margin-top:10px;"><?php _e( 'Install Automatise Theme', 'automatise-plugin' ); ?></a>
-
-
-                </table>
-                <?php submit_button(); ?>
-
-
             </form>
         </div>
         <script type="text/javascript">
@@ -206,6 +199,9 @@ class AP_Settings {
     }
 }
 
-
-
 new AP_Settings();
+
+// Очищаємо правила при зміні redirect slug
+add_action( 'update_option_ap_redirect_slug', function() {
+    flush_rewrite_rules();
+} );

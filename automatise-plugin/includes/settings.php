@@ -11,12 +11,14 @@ class AP_Settings {
     }
 
     public function add_menu() {
-        add_options_page(
+        add_menu_page(
             __( 'Site Appearance', 'automatise-plugin' ),
             __( 'Site Appearance', 'automatise-plugin' ),
             'manage_options',
             'ap-site-appearance',
-            array( $this, 'settings_page' )
+            array( $this, 'settings_page' ),
+            'dashicons-admin-customizer',
+            81
         );
     }
 

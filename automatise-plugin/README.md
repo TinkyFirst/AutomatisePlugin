@@ -7,6 +7,6 @@ A simple WordPress plugin that provides site appearance settings, custom page fi
 2. Activate the plugin from the WordPress admin plugins screen.
 
 ## Features
-- Settings page under **Settings > Site Appearance** for uploading a logo, favicon, and selecting primary and secondary colors.
+ - Top-level **Site Appearance** menu for uploading a logo, favicon, and selecting primary and secondary colors.
 - Custom fields for pages: title, description, content, FAQ, and game block (requires the Advanced Custom Fields plugin).
 - Automatically creates basic pages (`Home`, `About`, and `Contact`) on activation and ensures they are indexed by search engines.

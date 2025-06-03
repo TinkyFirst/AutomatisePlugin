@@ -8,10 +8,14 @@ class AP_Settings {
     public function __construct() {
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
         add_action( 'admin_init', array( $this, 'register_settings' ) );
+
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     }
 
+
+
     public function add_menu() {
+      
         add_menu_page(
             __( 'Site Appearance', 'automatise-plugin' ),
             __( 'Site Appearance', 'automatise-plugin' ),
@@ -21,6 +25,20 @@ class AP_Settings {
             'dashicons-admin-customizer',
             81
         );
+
+
+
+        // Якщо хочеш як підпункт у Settings, використовуй це замість add_menu_page:
+        /*
+        add_options_page(
+            __( 'Site Appearance', 'automatise-plugin' ),
+            __( 'Site Appearance', 'automatise-plugin' ),
+            'manage_options',
+            'ap-site-appearance',
+            array( $this, 'settings_page' )
+        );
+        */
+
     }
 
     public function register_settings() {
@@ -50,11 +68,9 @@ class AP_Settings {
         return array_map( 'absint', (array) $value );
     }
 
+ 
+
     public function settings_page() {
-        if ( isset( $_GET['ap_install_theme'] ) ) {
-            AP_Theme_Installer::install_and_activate();
-            echo '<div class="updated notice"><p>' . esc_html__( 'Automatise Theme installed and activated.', 'automatise-plugin' ) . '</p></div>';
-        }
         ?>
         <div class="wrap">
             <h1><?php _e( 'Site Appearance Settings', 'automatise-plugin' ); ?></h1>
@@ -152,6 +168,12 @@ class AP_Settings {
                 </table>
                 <?php submit_button(); ?>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=ap-site-appearance&ap_install_theme=1' ) ); ?>" class="button button-secondary" style="margin-top:10px;"><?php _e( 'Install Automatise Theme', 'automatise-plugin' ); ?></a>
+
+
+                </table>
+                <?php submit_button(); ?>
+
+
             </form>
         </div>
         <script type="text/javascript">
@@ -183,5 +205,7 @@ class AP_Settings {
         <?php
     }
 }
+
+
 
 new AP_Settings();

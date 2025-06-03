@@ -22,6 +22,7 @@ function ap_activate_plugin() {
 
     // Flush rewrite rules for redirect slug.
     flush_rewrite_rules();
+
 }
 add_action( 'wp_head', 'ap_add_index_meta' );
 function ap_add_index_meta() {
@@ -34,6 +35,7 @@ function ap_set_page_indexing( $post_ID, $post, $update ) {
         update_post_meta( $post_ID, '_ap_index', '1' );
     }
 }
+
 
 add_action( 'init', 'ap_register_redirect' );
 function ap_register_redirect() {
@@ -58,3 +60,4 @@ add_filter( 'query_vars', function( $vars ) {
     $vars[] = 'ap_redirect';
     return $vars;
 } );
+

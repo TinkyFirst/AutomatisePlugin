@@ -17,6 +17,7 @@ function ap_theme_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'ap_theme_styles' );
 
+
 function ap_theme_custom_styles() {
     ?>
     <style type="text/css">

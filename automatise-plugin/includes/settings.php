@@ -21,6 +21,7 @@ class AP_Settings {
             'dashicons-admin-customizer',
             81
         );
+        // Якщо хочеш підпункт у Settings, використовуй add_options_page, але не дублюй add_menu_page одночасно!
     }
 
     public function register_settings() {
@@ -52,8 +53,10 @@ class AP_Settings {
 
     public function settings_page() {
         if ( isset( $_GET['ap_install_theme'] ) ) {
-            AP_Theme_Installer::install_and_activate();
-            echo '<div class="updated notice"><p>' . esc_html__( 'Automatise Theme installed and activated.', 'automatise-plugin' ) . '</p></div>';
+            if ( class_exists( 'AP_Theme_Installer' ) ) {
+                AP_Theme_Installer::install_and_activate();
+                echo '<div class="updated notice"><p>' . esc_html__( 'Automatise Theme installed and activated.', 'automatise-plugin' ) . '</p></div>';
+            }
         }
         ?>
         <div class="wrap">
@@ -198,6 +201,7 @@ class AP_Settings {
 
 new AP_Settings();
 
+// Очищаємо правила при зміні redirect slug
 add_action( 'update_option_ap_redirect_slug', function() {
     flush_rewrite_rules();
 } );

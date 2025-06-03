@@ -11,6 +11,19 @@ class AP_Settings {
     }
 
     public function add_menu() {
+        // Top-level menu (видно в лівому меню WordPress)
+        add_menu_page(
+            __( 'Site Appearance', 'automatise-plugin' ),
+            __( 'Site Appearance', 'automatise-plugin' ),
+            'manage_options',
+            'ap-site-appearance',
+            array( $this, 'settings_page' ),
+            'dashicons-admin-customizer',
+            81
+        );
+
+        // Якщо хочеш як підпункт у Settings, використовуй це замість add_menu_page:
+        /*
         add_options_page(
             __( 'Site Appearance', 'automatise-plugin' ),
             __( 'Site Appearance', 'automatise-plugin' ),
@@ -18,6 +31,7 @@ class AP_Settings {
             'ap-site-appearance',
             array( $this, 'settings_page' )
         );
+        */
     }
 
     public function register_settings() {

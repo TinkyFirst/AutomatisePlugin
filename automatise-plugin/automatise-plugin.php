@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Automatise Plugin
  * Description: Adds site settings, custom page fields, and page creation with indexing.
- * Version: 1.0.0
+
  * Author: Codex
  * Text Domain: automatise-plugin
  */

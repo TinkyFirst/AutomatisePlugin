@@ -104,12 +104,28 @@ class AP_Settings {
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php _e( 'Font Color', 'automatise-plugin' ); ?></th>
-                        <td>
-                            <input type="text" name="ap_font_color" id="ap_font_color" value="<?php echo esc_attr( get_option( 'ap_font_color', '#000000' ) ); ?>" class="regular-text" />
-                        </td>
+                            <select name="ap_header_pages[]" multiple style="height:100px;width:250px;">
+                                <?php
+                                $header_selected = (array) get_option( 'ap_header_pages', array() );
+                                foreach ( get_pages() as $page ) {
+                                    $sel = in_array( $page->ID, $header_selected ) ? 'selected' : '';
+                                    echo '<option value="' . esc_attr( $page->ID ) . '" ' . $sel . '>' . esc_html( $page->post_title ) . '</option>';
+                                }
+                                ?>
+                            <select name="ap_footer_pages[]" multiple style="height:100px;width:250px;">
+                                <?php
+                                $footer_selected = (array) get_option( 'ap_footer_pages', array() );
+                                foreach ( get_pages() as $page ) {
+                                    $sel = in_array( $page->ID, $footer_selected ) ? 'selected' : '';
+                                    echo '<option value="' . esc_attr( $page->ID ) . '" ' . $sel . '>' . esc_html( $page->post_title ) . '</option>';
+                                }
+                                ?>
                     </tr>
                     <tr>
+
+add_action( 'update_option_ap_redirect_slug', function() {
+    flush_rewrite_rules();
+} );
                         <th scope="row"><?php _e( 'Button Color', 'automatise-plugin' ); ?></th>
                         <td>
                             <input type="text" name="ap_button_color" id="ap_button_color" value="<?php echo esc_attr( get_option( 'ap_button_color', '#000000' ) ); ?>" class="regular-text" />

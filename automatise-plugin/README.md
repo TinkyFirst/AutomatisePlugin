@@ -7,6 +7,8 @@ A simple WordPress plugin that provides site appearance settings, custom page fi
 2. Activate the plugin from the WordPress admin plugins screen.
 
 
+When you change the redirect slug, the plugin automatically flushes rewrite rules so the redirect works immediately.
+
 After activation, open **Site Appearance** in the admin sidebar. From this page you can configure logo, favicon, colors and select which pages appear in the header and footer. The same page also contains a button to install and activate the included theme.
 
 ## Features

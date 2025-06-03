@@ -12,12 +12,10 @@ class AP_Settings {
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     }
 
-    public function add_menu() {
-    }
+
 
     public function add_menu() {
-        // Top-level menu (видно в лівому меню WordPress)
-
+      
         add_menu_page(
             __( 'Site Appearance', 'automatise-plugin' ),
             __( 'Site Appearance', 'automatise-plugin' ),
@@ -27,6 +25,7 @@ class AP_Settings {
             'dashicons-admin-customizer',
             81
         );
+
 
 
         // Якщо хочеш як підпункт у Settings, використовуй це замість add_menu_page:
@@ -39,6 +38,7 @@ class AP_Settings {
             array( $this, 'settings_page' )
         );
         */
+
     }
 
     public function register_settings() {
@@ -68,12 +68,7 @@ class AP_Settings {
         return array_map( 'absint', (array) $value );
     }
 
-    public function settings_page() {
-        if ( isset( $_GET['ap_install_theme'] ) ) {
-            AP_Theme_Installer::install_and_activate();
-            echo '<div class="updated notice"><p>' . esc_html__( 'Automatise Theme installed and activated.', 'automatise-plugin' ) . '</p></div>';
-        }
-    }
+ 
 
     public function settings_page() {
         ?>
@@ -174,8 +169,10 @@ class AP_Settings {
                 <?php submit_button(); ?>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=ap-site-appearance&ap_install_theme=1' ) ); ?>" class="button button-secondary" style="margin-top:10px;"><?php _e( 'Install Automatise Theme', 'automatise-plugin' ); ?></a>
 
+
                 </table>
                 <?php submit_button(); ?>
+
 
             </form>
         </div>
@@ -210,6 +207,5 @@ class AP_Settings {
 }
 
 
+
 new AP_Settings();
-
-
